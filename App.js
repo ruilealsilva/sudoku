@@ -50,8 +50,8 @@ export default function App() {
     setIsSolvable(true);
     setTime(0);
     setIsTimerRunning(true);
-    setInitialBoard(SudokuGenerator.generate(difficulty));
-    setBoard([...initialBoard]);
+    setInitialBoard(() => SudokuGenerator.generate(difficulty));
+    setBoard(SudokuGenerator.generate(difficulty));
   };
 
   const handleSolveBoard = () => {
@@ -82,7 +82,7 @@ export default function App() {
         isSolvable={isSolvable}
         onSolve={handleSolveBoard}
       />
-      <Timer isRunning={isTimerRunning} onTick={handleTimerTick} />
+      <Timer isRunning={isTimerRunning} onTimeChange={handleTimerTick} />
       <FinishModal
         isVisible={isFinishModalVisible}
         time={time}

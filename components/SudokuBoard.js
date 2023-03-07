@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { View } from "react-native";
 import SudokuBoard from "react-native-sudoku-board";
 
-const SudokuBoard = ({board, onChange}) => {
-  const [board, setBoard] = useState([
+const SudokuGameBoard = ({ board, onChange }) => {
+  const [gameBoard, setGameBoard] = useState([
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -16,14 +16,15 @@ const SudokuBoard = ({board, onChange}) => {
   ]);
 
   const handleBoardChange = (newBoard) => {
-    setBoard(newBoard);
+    setGameBoard(newBoard);
+    onChange(newBoard);
   };
 
   return (
     <View>
-      <SudokuBoard board={board} onBoardChange={onChange} />
+      <SudokuBoard board={board} onBoardChange={handleBoardChange} />
     </View>
   );
 };
 
-export default SudokuBoard;
+export default SudokuGameBoard;
