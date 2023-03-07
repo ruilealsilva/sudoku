@@ -1,30 +1,112 @@
 import React, { useState } from "react";
-import { View } from "react-native";
-import SudokuBoard from "react-native-sudoku-board";
+import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 
-const SudokuGameBoard = ({ board, onChange }) => {
-  const [gameBoard, setGameBoard] = useState([
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-  ]);
+const SudokuBoard = ({ board, onBoardChange }) => {
+  const [selectedCell, setSelectedCell] = useState(null);
 
-  const handleBoardChange = (newBoard) => {
-    setGameBoard(newBoard);
-    onChange(newBoard);
+  const handleCellPress = (row, col) => {
+    if (board[row][col] === 0) {
+      setSelectedCell({ row, col });
+    }
   };
 
+  const handleNumberPress = (num) => {
+    if (selectedCell) {
+      const newBoard = [...board];
+      newBoard[selectedCell.row][selectedCell.col] = num;
+      onBoardChange(newBoard);
+    }
+  };
+
+  const renderCell = (row, col) => {
+    const value = board[row][col];
+    const isSelected =
+      selectedCell && selectedCell.row === row && selectedCell.col === col;
+    const isHighlighted =
+      selectedCell && (selectedCell.row === row || selectedCell.col === col);
+
+    const cellStyle = [
+      styles.cell,
+      isSelected && styles.selectedCell,
+      isHighlighted && styles.highlightedCell,
+    ];
+
+    return (
+      <TouchableOpacity
+        key={`${row}-${col}`}
+        style={cellStyle}
+        onPress={() => handleCellPress(row, col)}
+      >
+        <Text style={styles.cellText}>{value || ""}</Text>
+      </TouchableOpacity>
+    );
+  };
   return (
-    <View>
-      <SudokuBoard board={board} onBoardChange={handleBoardChange} />
+    <View style={styles.container}>
+      {board &&
+        board.map((row, rowIndex) => (
+          <View key={rowIndex} style={styles.row}>
+            {row.map((_, colIndex) => renderCell(rowIndex, colIndex))}
+          </View>
+        ))}
+      <View style={styles.numberPad}>
+        {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
+          <TouchableOpacity
+            key={num}
+            style={styles.numberPadButton}
+            onPress={() => handleNumberPress(num)}
+          >
+            <Text style={styles.numberPadButtonText}>{num}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
     </View>
   );
 };
 
-export default SudokuGameBoard;
+const styles = StyleSheet.create({
+  container: {
+    borderWidth: 1,
+    borderColor: "black",
+    padding: 5,
+  },
+  row: {
+    flexDirection: "row",
+  },
+  cell: {
+    width: 30,
+    height: 30,
+    borderWidth: 1,
+    borderColor: "black",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  cellText: {
+    fontSize: 20,
+  },
+  selectedCell: {
+    backgroundColor: "#D3D3D3",
+  },
+  highlightedCell: {
+    backgroundColor: "#F0F0F0",
+  },
+  numberPad: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginTop: 10,
+  },
+  numberPadButton: {
+    width: 30,
+    height: 30,
+    marginLeft: 5,
+    marginRight: 5,
+    backgroundColor: "#D3D3D3",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  numberPadButtonText: {
+    fontSize: 20,
+  },
+});
+
+export default SudokuBoard;

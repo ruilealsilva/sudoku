@@ -1,7 +1,5 @@
-import React from "react";
-
 const SudokuSolver = ({ board }) => {
-  const solve = (board) => {
+  const solve = () => {
     // Implement backtracking algorithm to solve Sudoku board
     const emptyCell = findEmptyCell(board);
     if (emptyCell === null) {
@@ -10,9 +8,9 @@ const SudokuSolver = ({ board }) => {
 
     const [row, col] = emptyCell;
     for (let num = 1; num <= 9; num++) {
-      if (isValidMove(board, row, col, num)) {
+      if (isValidMove(row, col, num)) {
         board[row][col] = num;
-        if (solve(board)) {
+        if (solve()) {
           return true;
         }
         board[row][col] = 0; // backtrack
@@ -21,7 +19,7 @@ const SudokuSolver = ({ board }) => {
     return false;
   };
 
-  const isValidMove = (board, row, col, num) => {
+  const isValidMove = (row, col, num) => {
     // Check if number is valid in row, column, and 3x3 box
     for (let i = 0; i < 9; i++) {
       if (board[row][i] === num || board[i][col] === num) {
@@ -54,35 +52,18 @@ const SudokuSolver = ({ board }) => {
     return null; // board is complete
   };
 
-  const copyBoard = (board) => {
+  const copyBoard = () => {
     // Create a deep copy of the board
     return board.map((row) => [...row]);
   };
 
   const solveBoard = () => {
-    const solvedBoard = copyBoard(board);
-    solve(solvedBoard);
+    const solvedBoard = copyBoard();
+    solve();
     return solvedBoard;
   };
 
-  const isSolved = () => {
-    const solvedBoard = solveBoard();
-    return isBoardEqual(solvedBoard, board);
-  };
-
-  const isBoardEqual = (board1, board2) => {
-    // Check if two boards are equal
-    for (let row = 0; row < 9; row++) {
-      for (let col = 0; col < 9; col++) {
-        if (board1[row][col] !== board2[row][col]) {
-          return false;
-        }
-      }
-    }
-    return true;
-  };
-
-  return isSolved();
+  return solveBoard();
 };
 
 export default SudokuSolver;

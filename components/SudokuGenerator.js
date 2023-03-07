@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import SudokuBoard from "react-native-sudoku-board";
+import { useEffect } from "react";
 
 const SudokuGenerator = ({ onGenerate }) => {
   const shuffle = (array) => {

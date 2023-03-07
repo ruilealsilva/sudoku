@@ -9,7 +9,7 @@ import FinishModal from "./components/FinishModal";
 
 export default function App() {
   const [initialBoard, setInitialBoard] = useState(null);
-  const [board, setBoard] = useState(null);
+  const [board, setBoard] = useState(Array(9).fill(Array(9).fill(0)));
   const [isSolved, setIsSolved] = useState(false);
   const [isSolvable, setIsSolvable] = useState(true);
   const [time, setTime] = useState(0);
@@ -78,6 +78,7 @@ export default function App() {
         onSubmit={handleGenerateBoard}
       />
       <SudokuSolver
+        board={board}
         isVisible={isSolved}
         isSolvable={isSolvable}
         onSolve={handleSolveBoard}
