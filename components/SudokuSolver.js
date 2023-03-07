@@ -1,3 +1,6 @@
+import React from "react";
+import { Text } from "react-native";
+
 const SudokuSolver = ({ board }) => {
   const solve = () => {
     // Implement backtracking algorithm to solve Sudoku board
@@ -63,7 +66,15 @@ const SudokuSolver = ({ board }) => {
     return solvedBoard;
   };
 
-  return solveBoard();
+  const renderBoard = () => {
+    // Convert solved board to formatted string
+    const boardString = solveBoard()
+      .map((row) => row.join(" ")) // Convert each row to a string
+      .join("\n"); // Join rows together with line breaks
+    return <Text>{boardString}</Text>; // Render board as Text component
+  };
+
+  return renderBoard();
 };
 
 export default SudokuSolver;

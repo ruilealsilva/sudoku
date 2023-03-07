@@ -8,7 +8,7 @@ import Timer from "./components/Timer";
 import FinishModal from "./components/FinishModal";
 
 export default function App() {
-  const [initialBoard, setInitialBoard] = useState(null);
+  // const [initialBoard, setInitialBoard] = useState(null);
   const [board, setBoard] = useState(Array(9).fill(Array(9).fill(0)));
   const [isSolved, setIsSolved] = useState(false);
   const [isSolvable, setIsSolvable] = useState(true);
@@ -18,11 +18,9 @@ export default function App() {
 
   const handleNewGame = () => {
     setIsSolved(false);
-    setIsSolvable(true);
     setTime(0);
-    setIsTimerRunning(false);
-    setInitialBoard(null);
-    setBoard(null);
+    setIsTimerRunning(true);
+    setBoard(Array(9).fill(Array(9).fill(0)));
     setIsFinishModalVisible(false);
   };
 
@@ -30,7 +28,7 @@ export default function App() {
     if (isSolved) return;
     setIsTimerRunning(false);
     setIsSolved(true);
-    setBoard([...initialBoard]);
+    // setBoard(Array(9).fill(Array(9).fill(0)));
   };
 
   const handleCheckSolution = () => {
@@ -45,19 +43,16 @@ export default function App() {
     setIsSolved(false);
   };
 
-  const handleGenerateBoard = (difficulty) => {
-    setIsSolved(false);
-    setIsSolvable(true);
+  const handleGenerate = (newBoard) => {
     setTime(0);
     setIsTimerRunning(true);
-    setInitialBoard(() => SudokuGenerator.generate(difficulty));
-    setBoard(SudokuGenerator.generate(difficulty));
+    setBoard(newBoard);
   };
 
   const handleSolveBoard = () => {
     setIsTimerRunning(false);
-    setIsSolvable(SudokuSolver.isSolvable(board));
-    setIsSolved(SudokuSolver.solve(board));
+    // setIsSolvable(SudokuSolver.isSolvable(board));
+    // setIsSolved(SudokuSolver.solve(board));
     setIsFinishModalVisible(true);
   };
 
@@ -73,22 +68,19 @@ export default function App() {
         onCheckSolution={handleCheckSolution}
       />
       <SudokuBoard board={board} onChange={handleBoardChange} />
-      <SudokuGenerator
-        isVisible={!initialBoard}
-        onSubmit={handleGenerateBoard}
-      />
+      {/* <SudokuGenerator isVisible={!initialBoard} onSubmit={handleGenerate} />
       <SudokuSolver
         board={board}
         isVisible={isSolved}
         isSolvable={isSolvable}
         onSolve={handleSolveBoard}
-      />
-      <Timer isRunning={isTimerRunning} onTimeChange={handleTimerTick} />
-      <FinishModal
+      /> */}
+      {/* <Timer isRunning={isTimerRunning} onTimeChange={handleTimerTick} /> */}
+      {/* <FinishModal
         isVisible={isFinishModalVisible}
         time={time}
         onClose={handleNewGame}
-      />
+      /> */}
     </View>
   );
 }

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 
-const SudokuBoard = ({ board, onBoardChange }) => {
+const SudokuBoard = ({ board, onChange }) => {
   const [selectedCell, setSelectedCell] = useState(null);
 
   const handleCellPress = (row, col) => {
@@ -11,10 +11,11 @@ const SudokuBoard = ({ board, onBoardChange }) => {
   };
 
   const handleNumberPress = (num) => {
+
     if (selectedCell) {
-      const newBoard = [...board];
+      const newBoard = board.map((row) => [...row]);
       newBoard[selectedCell.row][selectedCell.col] = num;
-      onBoardChange(newBoard);
+      onChange(newBoard);
     }
   };
 
@@ -41,6 +42,7 @@ const SudokuBoard = ({ board, onBoardChange }) => {
       </TouchableOpacity>
     );
   };
+
   return (
     <View style={styles.container}>
       {board &&

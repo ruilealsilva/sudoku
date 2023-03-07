@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-const SudokuGenerator = ({ onGenerate }) => {
+const SudokuGenerator = ({ onSubmit }) => {
   const shuffle = (array) => {
     // Implement Fisher-Yates shuffle algorithm
     for (let i = array.length - 1; i > 0; i--) {
@@ -75,7 +75,7 @@ const SudokuGenerator = ({ onGenerate }) => {
       Array.from({ length: 9 }, () => 0)
     );
     solve(board);
-    onGenerate(board);
+    onSubmit(board);
   }, []);
 
   return null; // component doesn't render anything
