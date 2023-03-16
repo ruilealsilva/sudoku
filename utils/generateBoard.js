@@ -49,7 +49,10 @@ const generateBoard = (difficulty) => {
   const isValidMove = (board, row, col, num) => {
     // Helper function to check if a move is valid
     for (let i = 0; i < 9; i++) {
-      if (board[row][i] === num || board[i][col] === num) {
+      if (
+        (i !== col && board[row][i] === num) ||
+        (i !== row && board[i][col] === num)
+      ) {
         return false; // num is already in row or column
       }
     }
