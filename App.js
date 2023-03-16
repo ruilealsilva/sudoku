@@ -1,59 +1,67 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, View } from "react-native";
 import Header from "./components/Header";
 import SudokuBoard from "./components/SudokuBoard";
-import SudokuGenerator from "./components/SudokuGenerator";
-import SudokuSolver from "./components/SudokuSolver";
+// import SudokuGenerator from "./components/SudokuGenerator";
 import Timer from "./components/Timer";
 import FinishModal from "./components/FinishModal";
+import generateBoard from "./utils/generateBoard";
+
+const isBoardMatchSolution = (board, solution) => {
+  // Check if board matches the solution
+  for (let row = 0; row < 9; row++) {
+    for (let col = 0; col < 9; col++) {
+      if (board[row][col] !== solution[row][col]) {
+        return false;
+      }
+    }
+  }
+  return true;
+};
+
+// Make sure generateExports both board and solution
+// Next allow for the already filled numbers to be changed
+// Make the cross disappear after input
+// Change cross color and make the center another color so it's easier to see
+// Take care of the Modal Logic To properly display a winner
+// Next steps: difficulty and maybe high score.
 
 export default function App() {
-  // const [initialBoard, setInitialBoard] = useState(null);
-  const [board, setBoard] = useState(Array(9).fill(Array(9).fill(0)));
-  const [isSolved, setIsSolved] = useState(false);
-  const [isSolvable, setIsSolvable] = useState(true);
+  const [isFirstTime, setFirstTime] = useState(true);
+  const [board, setBoard] = useState(generateBoard("hard"));
+  const [solution, setSolution] = useState(false);
   const [time, setTime] = useState(0);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [isFinishModalVisible, setIsFinishModalVisible] = useState(false);
 
+  useEffect(() => {
+    const isBoardFilled = board.every((row) => row.every((cell) => cell !== 0));
+    const isBoardCorrect =
+      isBoardFilled && isBoardMatchSolution(board, solution);
+
+    if (isFirstTime) {
+      setFirstTime(false);
+      setIsTimerRunning(true);
+    }
+
+    if (isBoardCorrect) {
+      // Board is solved
+      setIsTimerRunning(false);
+      setIsFinishModalVisible(true);
+    } else {
+      // Board is not solved
+      // Do something else, like show an error message or reset the board
+    }
+  }, [board, isFirstTime]);
+
   const handleNewGame = () => {
-    setIsSolved(false);
     setTime(0);
     setIsTimerRunning(true);
-    setBoard(Array(9).fill(Array(9).fill(0)));
-    setIsFinishModalVisible(false);
-  };
-
-  const handleSolve = () => {
-    if (isSolved) return;
-    setIsTimerRunning(false);
-    setIsSolved(true);
-    // setBoard(Array(9).fill(Array(9).fill(0)));
-  };
-
-  const handleCheckSolution = () => {
-    if (isSolved) return;
-    setIsTimerRunning(false);
-    setIsSolved(isSolvable);
-    setIsFinishModalVisible(true);
+    handleBoardChange(generateBoard("hard"));
   };
 
   const handleBoardChange = (newBoard) => {
     setBoard(newBoard);
-    setIsSolved(false);
-  };
-
-  const handleGenerate = (newBoard) => {
-    setTime(0);
-    setIsTimerRunning(true);
-    setBoard(newBoard);
-  };
-
-  const handleSolveBoard = () => {
-    setIsTimerRunning(false);
-    // setIsSolvable(SudokuSolver.isSolvable(board));
-    // setIsSolved(SudokuSolver.solve(board));
-    setIsFinishModalVisible(true);
   };
 
   const handleTimerTick = () => {
@@ -62,25 +70,14 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Header
-        onNewGame={handleNewGame}
-        onSolve={handleSolve}
-        onCheckSolution={handleCheckSolution}
-      />
+      <Header title={"A title"} />
       <SudokuBoard board={board} onChange={handleBoardChange} />
-      {/* <SudokuGenerator isVisible={!initialBoard} onSubmit={handleGenerate} />
-      <SudokuSolver
-        board={board}
-        isVisible={isSolved}
-        isSolvable={isSolvable}
-        onSolve={handleSolveBoard}
-      /> */}
-      {/* <Timer isRunning={isTimerRunning} onTimeChange={handleTimerTick} /> */}
-      {/* <FinishModal
+      <Timer isRunning={isTimerRunning} onTimeChange={handleTimerTick} />
+      <FinishModal
         isVisible={isFinishModalVisible}
         time={time}
         onClose={handleNewGame}
-      /> */}
+      />
     </View>
   );
 }

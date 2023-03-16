@@ -1,6 +1,4 @@
-import { useEffect } from "react";
-
-const SudokuGenerator = ({ onSubmit }) => {
+const generateBoard = (difficulty) => {
   const shuffle = (array) => {
     // Implement Fisher-Yates shuffle algorithm
     for (let i = array.length - 1; i > 0; i--) {
@@ -69,16 +67,40 @@ const SudokuGenerator = ({ onSubmit }) => {
     return true; // move is valid
   };
 
-  useEffect(() => {
-    // Generate a new Sudoku board when the component mounts
-    const board = Array.from({ length: 9 }, () =>
-      Array.from({ length: 9 }, () => 0)
-    );
-    solve(board);
-    onSubmit(board);
-  }, []);
+  // Define the number of cells to remove based on difficulty
+  let cellsToRemove;
+  switch (difficulty) {
+    case "easy":
+      cellsToRemove = 40;
+      break;
+    case "medium":
+      cellsToRemove = 50;
+      break;
+    case "hard":
+      cellsToRemove = 60;
+      break;
+    default:
+      cellsToRemove = 40;
+  }
 
-  return null; // component doesn't render anything
+  // Generate a new Sudoku board
+  const board = Array.from({ length: 9 }, () =>
+    Array.from({ length: 9 }, () => 0)
+  );
+  solve(board);
+
+  // Remove cells to create the puzzle
+  let cellsRemoved = 0;
+  while (cellsRemoved < cellsToRemove) {
+    const row = Math.floor(Math.random() * 9);
+    const col = Math.floor(Math.random() * 9);
+    if (board[row][col] !== 0) {
+      board[row][col] = 0;
+      cellsRemoved++;
+    }
+  }
+
+  return board;
 };
 
-export default SudokuGenerator;
+export default generateBoard;
