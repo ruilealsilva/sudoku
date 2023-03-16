@@ -70,6 +70,9 @@ const generateBoard = (difficulty) => {
   // Define the number of cells to remove based on difficulty
   let cellsToRemove;
   switch (difficulty) {
+    case "test":
+      cellsToRemove = 1;
+      break;
     case "easy":
       cellsToRemove = 40;
       break;
@@ -100,7 +103,22 @@ const generateBoard = (difficulty) => {
     }
   }
 
-  return board;
+  // Generate the complete board (solution)
+  const completeBoard = Array.from({ length: 9 }, () =>
+    Array.from({ length: 9 }, () => 0)
+  );
+  for (let row = 0; row < 9; row++) {
+    for (let col = 0; col < 9; col++) {
+      completeBoard[row][col] = board[row][col];
+    }
+  }
+  solve(completeBoard);
+
+  // Return an object with both boards as properties
+  return {
+    puzzle: board,
+    solution: completeBoard,
+  };
 };
 
 export default generateBoard;

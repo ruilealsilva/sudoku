@@ -19,6 +19,8 @@ const isBoardMatchSolution = (board, solution) => {
   return true;
 };
 
+const { puzzle, solution } = generateBoard("test");
+
 // Make sure generateExports both board and solution
 // Next allow for the already filled numbers to be changed
 // Make the cross disappear after input
@@ -28,8 +30,8 @@ const isBoardMatchSolution = (board, solution) => {
 
 export default function App() {
   const [isFirstTime, setFirstTime] = useState(true);
-  const [board, setBoard] = useState(generateBoard("hard"));
-  const [solution, setSolution] = useState(false);
+  const [board, setBoard] = useState(puzzle);
+  const [solution, setSolution] = useState(solution);
   const [time, setTime] = useState(0);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [isFinishModalVisible, setIsFinishModalVisible] = useState(false);
@@ -57,11 +59,7 @@ export default function App() {
   const handleNewGame = () => {
     setTime(0);
     setIsTimerRunning(true);
-    handleBoardChange(generateBoard("hard"));
-  };
-
-  const handleBoardChange = (newBoard) => {
-    setBoard(newBoard);
+    setBoard(puzzle);
   };
 
   const handleTimerTick = () => {
@@ -71,7 +69,7 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Header title={"A title"} />
-      <SudokuBoard board={board} onChange={handleBoardChange} />
+      <SudokuBoard board={board} onChange={(newBoard) => setBoard(newBoard)} />
       <Timer isRunning={isTimerRunning} onTimeChange={handleTimerTick} />
       <FinishModal
         isVisible={isFinishModalVisible}

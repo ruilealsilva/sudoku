@@ -5,13 +5,10 @@ const SudokuBoard = ({ board, onChange }) => {
   const [selectedCell, setSelectedCell] = useState(null);
 
   const handleCellPress = (row, col) => {
-    if (board[row][col] === 0) {
-      setSelectedCell({ row, col });
-    }
+    setSelectedCell({ row, col });
   };
 
   const handleNumberPress = (num) => {
-
     if (selectedCell) {
       const newBoard = board.map((row) => [...row]);
       newBoard[selectedCell.row][selectedCell.col] = num;
@@ -23,8 +20,11 @@ const SudokuBoard = ({ board, onChange }) => {
     const value = board[row][col];
     const isSelected =
       selectedCell && selectedCell.row === row && selectedCell.col === col;
+
     const isHighlighted =
-      selectedCell && (selectedCell.row === row || selectedCell.col === col);
+      selectedCell &&
+      ((selectedCell.row === row && selectedCell.col !== col) ||
+        (selectedCell.row !== row && selectedCell.col === col));
 
     const cellStyle = [
       styles.cell,
@@ -68,6 +68,7 @@ const SudokuBoard = ({ board, onChange }) => {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     borderWidth: 1,
     borderColor: "black",
     padding: 5,
@@ -76,8 +77,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   cell: {
-    width: 30,
-    height: 30,
+    flex: 1,
+    aspectRatio: 1,
     borderWidth: 1,
     borderColor: "black",
     alignItems: "center",
@@ -87,7 +88,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   selectedCell: {
-    backgroundColor: "#D3D3D3",
+    backgroundColor: "lightblue",
   },
   highlightedCell: {
     backgroundColor: "#F0F0F0",
