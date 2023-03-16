@@ -63,8 +63,12 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Header title={"A title"} />
-      <SudokuBoard board={board} onChange={(newBoard) => setBoard(newBoard)} />
+      <Header title={"Sudoku Tuga"} />
+      <SudokuBoard
+        board={board}
+        time={time}
+        onChange={(newBoard) => setBoard(newBoard)}
+      />
       <Timer isRunning={isTimerRunning} onTimeChange={handleTimerTick} />
       <FinishModal
         isVisible={isFinishModalVisible}

@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 
-const SudokuBoard = ({ board, onChange }) => {
+const SudokuBoard = ({ board, onChange, time }) => {
   const [selectedCell, setSelectedCell] = useState(null);
+
+  useEffect(() => {
+    if (time === 0) setSelectedCell(null);
+  }, [time]);
 
   const handleCellPress = (row, col) => {
     setSelectedCell({ row, col });

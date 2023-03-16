@@ -74,7 +74,7 @@ const generateBoard = (difficulty) => {
   let cellsToRemove;
   switch (difficulty) {
     case "test":
-      cellsToRemove = 1;
+      cellsToRemove = 2;
       break;
     case "easy":
       cellsToRemove = 40;
