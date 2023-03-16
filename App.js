@@ -7,17 +7,9 @@ import Timer from "./components/Timer";
 import FinishModal from "./components/FinishModal";
 import generateBoard from "./utils/generateBoard";
 
-const isBoardMatchSolution = (board, solution) => {
-  // Check if board matches the solution
-  for (let row = 0; row < 9; row++) {
-    for (let col = 0; col < 9; col++) {
-      if (board[row][col] !== solution[row][col]) {
-        return false;
-      }
-    }
-  }
-  return true;
-};
+function compareArrays(arr1, arr2) {
+  return JSON.stringify(arr1) === JSON.stringify(arr2);
+}
 
 const { puzzle, solution } = generateBoard("test");
 
@@ -31,15 +23,15 @@ const { puzzle, solution } = generateBoard("test");
 export default function App() {
   const [isFirstTime, setFirstTime] = useState(true);
   const [board, setBoard] = useState(puzzle);
-  const [solution, setSolution] = useState(solution);
+  // const [solution, setSolution] = useState(solution);
   const [time, setTime] = useState(0);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [isFinishModalVisible, setIsFinishModalVisible] = useState(false);
 
   useEffect(() => {
     const isBoardFilled = board.every((row) => row.every((cell) => cell !== 0));
-    const isBoardCorrect =
-      isBoardFilled && isBoardMatchSolution(board, solution);
+
+    const isBoardCorrect = isBoardFilled && compareArrays(board, solution);
 
     if (isFirstTime) {
       setFirstTime(false);
@@ -66,6 +58,11 @@ export default function App() {
     setTime((prevTime) => prevTime + 1);
   };
 
+  const handleCloseModal = () => {
+    setIsFinishModalVisible(false);
+    handleNewGame();
+  };
+
   return (
     <View style={styles.container}>
       <Header title={"A title"} />
@@ -74,7 +71,7 @@ export default function App() {
       <FinishModal
         isVisible={isFinishModalVisible}
         time={time}
-        onClose={handleNewGame}
+        onClose={handleCloseModal}
       />
     </View>
   );
