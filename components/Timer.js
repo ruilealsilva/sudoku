@@ -12,6 +12,7 @@ const Timer = ({ isRunning, onTimeChange }) => {
       }, 1000);
     } else {
       clearInterval(interval);
+      setSeconds(0); // reset seconds to 0
     }
     return () => clearInterval(interval);
   }, [isRunning]);

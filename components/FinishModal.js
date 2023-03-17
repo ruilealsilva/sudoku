@@ -1,5 +1,5 @@
-import React from 'react';
-import { StyleSheet, Modal, View, Text, TouchableOpacity } from 'react-native';
+import React from "react";
+import { StyleSheet, Modal, View, Text, TouchableOpacity } from "react-native";
 
 const FinishModal = ({ isVisible, time, onClose }) => {
   const formatTime = (timeInSeconds) => {
@@ -9,18 +9,18 @@ const FinishModal = ({ isVisible, time, onClose }) => {
   };
 
   const padTime = (time) => {
-    return time.toString().padStart(2, '0');
+    return time.toString().padStart(2, "0");
   };
 
   return (
     <Modal animationType="slide" transparent={true} visible={isVisible}>
       <View style={styles.modal}>
         <View style={styles.content}>
-          <Text style={styles.title}>Congratulations!</Text>
-          <Text style={styles.subtitle}>You solved the puzzle in:</Text>
+          <Text style={styles.title}>Parabéns!</Text>
+          <Text style={styles.subtitle}>Tempo até à solução:</Text>
           <Text style={styles.time}>{formatTime(time)}</Text>
           <TouchableOpacity style={styles.button} onPress={onClose}>
-            <Text style={styles.buttonText}>Close</Text>
+            <Text style={styles.buttonText}>Fechar</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -31,20 +31,20 @@ const FinishModal = ({ isVisible, time, onClose }) => {
 const styles = StyleSheet.create({
   modal: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   content: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     padding: 20,
     borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 10,
   },
   subtitle: {
@@ -53,18 +53,18 @@ const styles = StyleSheet.create({
   },
   time: {
     fontSize: 32,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 20,
   },
   button: {
-    backgroundColor: '#333',
+    backgroundColor: "#333",
     padding: 10,
     borderRadius: 5,
   },
   buttonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });
 

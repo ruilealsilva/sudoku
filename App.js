@@ -62,23 +62,23 @@ export default function App() {
 
   return (
     <TouchableWithoutFeedback onPress={() => setIsOutsideClick(true)}>
-    <View style={styles.container}>
-      <Header title={"Sudoku Tuga"} />
-      <SudokuBoard
-        board={board}
-        time={time}
-        onChange={(newBoard) => setBoard(newBoard)}
-        isOutsideClick={isOutsideClick}
-        setIsOutsideClick={setIsOutsideClick}
-      />
-      <Timer isRunning={isTimerRunning} onTimeChange={handleTimerTick} />
-      <FinishModal
-        isVisible={isFinishModalVisible}
-        time={time}
-        onClose={handleCloseModal}
-      />
-    </View>
-  </TouchableWithoutFeedback>
+      <View style={styles.container}>
+        <Header title={"Sudoku Tuga"} />
+        <SudokuBoard
+          board={board}
+          time={time}
+          onChange={(newBoard) => setBoard(newBoard)}
+          isOutsideClick={isOutsideClick}
+          setIsOutsideClick={setIsOutsideClick}
+        />
+        <Timer isRunning={isTimerRunning} onTimeChange={handleTimerTick} />
+        <FinishModal
+          isVisible={isFinishModalVisible}
+          time={time}
+          onClose={handleCloseModal}
+        />
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 
