@@ -1,12 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+  Dimensions,
+} from "react-native";
 
-const SudokuBoard = ({ board, onChange, time }) => {
+const SudokuBoard = ({
+  board,
+  onChange,
+  time,
+  isOutsideClick,
+  setIsOutsideClick,
+}) => {
   const [selectedCell, setSelectedCell] = useState(null);
 
   useEffect(() => {
-    if (time === 0) setSelectedCell(null);
-  }, [time]);
+    if (time === 0 || isOutsideClick) {
+      setSelectedCell(null);
+      setIsOutsideClick(false);
+    }
+  }, [time, isOutsideClick]);
 
   const handleCellPress = (row, col) => {
     setSelectedCell({ row, col });
@@ -30,19 +45,18 @@ const SudokuBoard = ({ board, onChange, time }) => {
       ((selectedCell.row === row && selectedCell.col !== col) ||
         (selectedCell.row !== row && selectedCell.col === col));
 
-    const isTopEdge = row % 3 === 0;
-    const isLeftEdge = col % 3 === 0;
-    const isRightEdge = (col + 1) % 3 === 0;
-    const isBottomEdge = (row + 1) % 3 === 0;
+    const isMultipleThirdRow = row % 3 === 0;
+    const isMultipleThirdCol = (col + 1) % 3 === 0;
 
+    const containerWidth = Dimensions.get("window").width * 0.9;
+    const cellSize = containerWidth / 9;
     const cellStyle = [
       styles.cell,
       isSelected && styles.selectedCell,
       isHighlighted && styles.highlightedCell,
-      isTopEdge && styles.topEdge,
-      isLeftEdge && styles.leftEdge,
-      isRightEdge && styles.rightEdge,
-      isBottomEdge && styles.bottomEdge,
+      isMultipleThirdRow && styles.isMultipleThirdRowCell,
+      isMultipleThirdCol && styles.isMultipleThirdColCell,
+      { width: cellSize, height: cellSize },
     ];
 
     return (
@@ -81,7 +95,6 @@ const SudokuBoard = ({ board, onChange, time }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     borderWidth: 1,
     borderColor: "black",
     padding: 5,
@@ -90,14 +103,20 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   cell: {
+    boxSizing: "border-box",
     flex: 1,
-    aspectRatio: 1,
     borderWidth: 1,
     borderColor: "black",
     alignItems: "center",
     justifyContent: "center",
     borderTopWidth: 0,
     borderRightWidth: 0,
+  },
+  isMultipleThirdRowCell: {
+    borderTopWidth: 2,
+  },
+  isMultipleThirdColCell: {
+    borderRightWidth: 2,
   },
   cellText: {
     fontSize: 20,

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, TouchableWithoutFeedback, View } from "react-native";
 import Header from "./components/Header";
 import SudokuBoard from "./components/SudokuBoard";
 import Timer from "./components/Timer";
@@ -19,6 +19,7 @@ const emptyBoard = Array.from({ length: 9 }, () =>
 
 export default function App() {
   const [board, setBoard] = useState(emptyBoard);
+  const [isOutsideClick, setIsOutsideClick] = useState(false);
   const [levelSolution, setLevelSolution] = useState(false);
   const [time, setTime] = useState(0);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
@@ -37,7 +38,6 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    console.log("RELOAD");
     const isBoardFilled = board.every((row) => row.every((cell) => cell !== 0));
     const isBoardCorrect = isBoardFilled && compareArrays(board, levelSolution);
 
@@ -61,12 +61,15 @@ export default function App() {
   };
 
   return (
+    <TouchableWithoutFeedback onPress={() => setIsOutsideClick(true)}>
     <View style={styles.container}>
       <Header title={"Sudoku Tuga"} />
       <SudokuBoard
         board={board}
         time={time}
         onChange={(newBoard) => setBoard(newBoard)}
+        isOutsideClick={isOutsideClick}
+        setIsOutsideClick={setIsOutsideClick}
       />
       <Timer isRunning={isTimerRunning} onTimeChange={handleTimerTick} />
       <FinishModal
@@ -75,6 +78,7 @@ export default function App() {
         onClose={handleCloseModal}
       />
     </View>
+  </TouchableWithoutFeedback>
   );
 }
 
