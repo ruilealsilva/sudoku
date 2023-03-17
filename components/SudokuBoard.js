@@ -30,10 +30,19 @@ const SudokuBoard = ({ board, onChange, time }) => {
       ((selectedCell.row === row && selectedCell.col !== col) ||
         (selectedCell.row !== row && selectedCell.col === col));
 
+    const isTopEdge = row % 3 === 0;
+    const isLeftEdge = col % 3 === 0;
+    const isRightEdge = (col + 1) % 3 === 0;
+    const isBottomEdge = (row + 1) % 3 === 0;
+
     const cellStyle = [
       styles.cell,
       isSelected && styles.selectedCell,
       isHighlighted && styles.highlightedCell,
+      isTopEdge && styles.topEdge,
+      isLeftEdge && styles.leftEdge,
+      isRightEdge && styles.rightEdge,
+      isBottomEdge && styles.bottomEdge,
     ];
 
     return (
@@ -87,6 +96,8 @@ const styles = StyleSheet.create({
     borderColor: "black",
     alignItems: "center",
     justifyContent: "center",
+    borderTopWidth: 0,
+    borderRightWidth: 0,
   },
   cellText: {
     fontSize: 20,
@@ -97,6 +108,19 @@ const styles = StyleSheet.create({
   highlightedCell: {
     backgroundColor: "#F0F0F0",
   },
+  topEdge: {
+    borderTopWidth: 2,
+  },
+  // leftEdge: {
+  //   borderLeftWidth: 2,
+  // },
+  // rightEdge: {
+  //   borderRightWidth: 2,
+  // },
+  bottomEdge: {
+    borderBottomWidth: 2,
+  },
+
   numberPad: {
     flexDirection: "row",
     justifyContent: "center",
