@@ -14,8 +14,7 @@ const emptyBoard = Array.from({ length: 9 }, () =>
   Array.from({ length: 9 }, () => 0)
 );
 
-// Make the cross disappear after input
-// Change cross color and make the center another color so it's easier to see
+//
 // Next steps: difficulty and maybe high score.
 
 export default function App() {
