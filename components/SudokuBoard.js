@@ -15,6 +15,7 @@ const SudokuBoard = ({
   setIsOutsideClick,
 }) => {
   const [selectedCell, setSelectedCell] = useState(null);
+  const [isInitialBoard, setIsInitialBoard] = useState(true);
 
   useEffect(() => {
     if (time === 0 || isOutsideClick) {
@@ -31,6 +32,7 @@ const SudokuBoard = ({
     if (selectedCell) {
       const newBoard = board.map((row) => [...row]);
       newBoard[selectedCell.row][selectedCell.col] = num;
+      if (isInitialBoard) setIsInitialBoard(false);
       onChange(newBoard);
     }
   };
@@ -62,6 +64,7 @@ const SudokuBoard = ({
     return (
       <TouchableOpacity
         key={`${row}-${col}`}
+        disabled={isInitialBoard && value !== 0}
         style={cellStyle}
         onPress={() => handleCellPress(row, col)}
       >
@@ -130,12 +133,6 @@ const styles = StyleSheet.create({
   topEdge: {
     borderTopWidth: 2,
   },
-  // leftEdge: {
-  //   borderLeftWidth: 2,
-  // },
-  // rightEdge: {
-  //   borderRightWidth: 2,
-  // },
   bottomEdge: {
     borderBottomWidth: 2,
   },
