@@ -20,6 +20,7 @@ const emptyBoard = Array.from({ length: 9 }, () =>
 
 const Game = () => {
   const [board, setBoard] = useState(emptyBoard);
+  const [puzzle, setPuzzle] = useState(emptyBoard);
   const [isOutsideClick, setIsOutsideClick] = useState(false);
   const [levelSolution, setLevelSolution] = useState(false);
   const [time, setTime] = useState(0);
@@ -29,10 +30,11 @@ const Game = () => {
 
   const handleNewGame = () => {
     const difficulty = route.params?.difficulty || "moderate";
-    const { puzzle, solution } = generateBoard(difficulty);
+    const { puzzle: newPuzzle, solution } = generateBoard(difficulty);
     setTime(0);
     setIsTimerRunning(true);
-    setBoard(puzzle);
+    setBoard(newPuzzle);
+    setPuzzle(newPuzzle);
     setLevelSolution(solution);
   };
 
@@ -66,8 +68,8 @@ const Game = () => {
   return (
     <TouchableWithoutFeedback onPress={() => setIsOutsideClick(true)}>
       <View style={styles.container}>
-        {/* <Header title={"Sudoku Tuga"} /> */}
         <SudokuBoard
+          initialBoard={puzzle}
           board={board}
           time={time}
           onChange={(newBoard) => setBoard(newBoard)}

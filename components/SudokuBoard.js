@@ -8,6 +8,7 @@ import {
 } from "react-native";
 
 const SudokuBoard = ({
+  initialBoard,
   board,
   onChange,
   time,
@@ -15,7 +16,6 @@ const SudokuBoard = ({
   setIsOutsideClick,
 }) => {
   const [selectedCell, setSelectedCell] = useState(null);
-  const [isInitialBoard, setIsInitialBoard] = useState(true);
 
   useEffect(() => {
     if (time === 0 || isOutsideClick) {
@@ -32,13 +32,13 @@ const SudokuBoard = ({
     if (selectedCell) {
       const newBoard = board.map((row) => [...row]);
       newBoard[selectedCell.row][selectedCell.col] = num;
-      if (isInitialBoard) setIsInitialBoard(false);
       onChange(newBoard);
     }
   };
 
   const renderCell = (row, col) => {
     const value = board[row][col];
+    const isInitialBoardCell = initialBoard[row][col] !== 0;
     const isSelected =
       selectedCell && selectedCell.row === row && selectedCell.col === col;
 
@@ -58,13 +58,14 @@ const SudokuBoard = ({
       isHighlighted && styles.highlightedCell,
       isMultipleThirdRow && styles.isMultipleThirdRowCell,
       isMultipleThirdCol && styles.isMultipleThirdColCell,
+      isInitialBoardCell && value !== 0 && styles.boldText,
       { width: cellSize, height: cellSize },
     ];
 
     return (
       <TouchableOpacity
         key={`${row}-${col}`}
-        disabled={isInitialBoard && value !== 0}
+        disabled={isInitialBoardCell && value !== 0}
         style={cellStyle}
         onPress={() => handleCellPress(row, col)}
       >
@@ -123,6 +124,9 @@ const styles = StyleSheet.create({
   },
   cellText: {
     fontSize: 20,
+  },
+  boldText: {
+    fontWeight: 700,
   },
   selectedCell: {
     backgroundColor: "lightblue",
