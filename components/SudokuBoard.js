@@ -7,9 +7,13 @@ import {
   Dimensions,
 } from "react-native";
 
+const containerWidth = Dimensions.get("window").width * 0.9;
+const cellSize = containerWidth / 9;
+
 const SudokuBoard = ({
   initialBoard,
   board,
+  wrongValueCells,
   onChange,
   time,
   isOutsideClick,
@@ -42,23 +46,21 @@ const SudokuBoard = ({
     const isSelected =
       selectedCell && selectedCell.row === row && selectedCell.col === col;
 
-    const isHighlighted =
-      selectedCell &&
-      ((selectedCell.row === row && selectedCell.col !== col) ||
-        (selectedCell.row !== row && selectedCell.col === col));
+    const isWrongValueCell = wrongValueCells.find(
+      (item) => item.col === col && item.row === row
+    );
 
     const isMultipleThirdRow = row % 3 === 0;
     const isMultipleThirdCol = (col + 1) % 3 === 0;
 
-    const containerWidth = Dimensions.get("window").width * 0.9;
     const cellSize = containerWidth / 9;
     const cellStyle = [
       styles.cell,
-      isSelected && styles.selectedCell,
-      isHighlighted && styles.highlightedCell,
       isMultipleThirdRow && styles.isMultipleThirdRowCell,
       isMultipleThirdCol && styles.isMultipleThirdColCell,
-      isInitialBoardCell && value !== 0 && styles.boldText,
+      isInitialBoardCell && value !== 0 && styles.staticCell,
+      isWrongValueCell && value !== 0 && styles.wrongValueCell,
+      isSelected && styles.selectedCell,
       { width: cellSize, height: cellSize },
     ];
 
@@ -99,9 +101,9 @@ const SudokuBoard = ({
 
 const styles = StyleSheet.create({
   container: {
-    borderWidth: 1,
-    borderColor: "black",
-    padding: 5,
+    // borderWidth: 1,
+    // borderColor: "black",
+    // padding: 5,
   },
   row: {
     flexDirection: "row",
@@ -124,8 +126,6 @@ const styles = StyleSheet.create({
   },
   cellText: {
     fontSize: 20,
-  },
-  boldText: {
     fontWeight: 700,
   },
   selectedCell: {
@@ -133,6 +133,12 @@ const styles = StyleSheet.create({
   },
   highlightedCell: {
     backgroundColor: "#F0F0F0",
+  },
+  staticCell: {
+    backgroundColor: "#F0F0F0",
+  },
+  wrongValueCell: {
+    backgroundColor: "#FFBABA",
   },
   topEdge: {
     borderTopWidth: 2,
@@ -144,30 +150,34 @@ const styles = StyleSheet.create({
   numberPad: {
     flexDirection: "row",
     justifyContent: "center",
-    marginTop: 10,
     paddingHorizontal: 10,
+    backgroundColor: "#E3F2FD",
+    paddingVertical: 20,
   },
   numberPadButton: {
-    width: 30,
-    height: 30,
-    marginLeft: 5,
-    marginRight: 5,
-    backgroundColor: "#D3D3D3",
+    width: cellSize * 0.9,
+    height: cellSize * 0.9,
+    marginHorizontal: 2,
+    backgroundColor: "#2196F3",
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: 10,
+    borderRadius: 8,
     borderWidth: 1,
-    borderColor: "#B2B2B2",
-    borderBottomWidth: 2,
-    borderBottomColor: "#B2B2B2",
-    shadowColor: "black",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.4,
+    borderColor: "#0D47A1",
+    shadowColor: "#0D47A1",
+    shadowOffset: { width: 1, height: 1 },
+    shadowOpacity: 0.8,
     shadowRadius: 2,
     elevation: 2,
+    borderBottomWidth: 3,
+    borderBottomColor: "#0D47A1",
+    borderRightWidth: 3,
+    borderRightColor: "#0D47A1",
   },
   numberPadButtonText: {
     fontSize: 20,
+    color: "#FFFFFF",
+    fontWeight: "bold",
   },
 });
 
