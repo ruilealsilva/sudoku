@@ -1,20 +1,22 @@
-import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React, { useState, useEffect, useRef } from "react";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 
 const Timer = ({ isRunning, onTimeChange }) => {
   const [seconds, setSeconds] = useState(0);
+  const [timerId, setTimerId] = useState(null);
+  const [isPaused, setIsPaused] = useState(false);
 
   useEffect(() => {
-    let interval = null;
     if (isRunning) {
-      interval = setInterval(() => {
-        setSeconds((seconds) => seconds + 1);
-      }, 1000);
+      setTimerId(
+        setInterval(() => {
+          setSeconds((seconds) => seconds + 1);
+        }, 1000)
+      );
+      setIsPaused(false);
     } else {
-      clearInterval(interval);
-      setSeconds(0); // reset seconds to 0
+      clearInterval(timerId);
     }
-    return () => clearInterval(interval);
   }, [isRunning]);
 
   useEffect(() => {
@@ -31,18 +33,38 @@ const Timer = ({ isRunning, onTimeChange }) => {
     return time.toString().padStart(2, "0");
   };
 
+  const handlePauseResume = () => {
+    if (!isPaused) {
+      setIsPaused(true);
+      clearInterval(timerId);
+    } else {
+      setIsPaused(false);
+      setTimerId(
+        setInterval(() => {
+          setSeconds((seconds) => seconds + 1);
+        }, 1000)
+      );
+    }
+  };
+
   return (
     <View style={styles.timer}>
       <Text style={styles.time}>{formatTime(seconds)}</Text>
+      <TouchableOpacity style={styles.button} onPress={handlePauseResume}>
+        <Text style={styles.buttonText}>
+          {isPaused ? "Recomeçar" : "Pausar"}
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   timer: {
+    flexDirection: "row",
     backgroundColor: "#fff",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-evenly",
     height: 80,
     paddingTop: 10,
     paddingBottom: 10,
@@ -57,6 +79,19 @@ const styles = StyleSheet.create({
     color: "#333",
     fontSize: 28,
     fontWeight: "bold",
+  },
+  button: {
+    backgroundColor: "#fff",
+    borderWidth: 1,
+    borderColor: "#ccc",
+    paddingVertical: 8,
+    paddingHorizontal: 20,
+    borderRadius: 20,
+    elevation: 3,
+  },
+  buttonText: {
+    color: "grey",
+    fontSize: 18,
   },
 });
 
