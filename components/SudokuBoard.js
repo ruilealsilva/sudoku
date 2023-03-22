@@ -100,11 +100,7 @@ const SudokuBoard = ({
 };
 
 const styles = StyleSheet.create({
-  container: {
-    // borderWidth: 1,
-    // borderColor: "black",
-    // padding: 5,
-  },
+  container: {},
   row: {
     flexDirection: "row",
   },
