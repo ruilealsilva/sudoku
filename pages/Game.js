@@ -5,6 +5,7 @@ import SudokuBoard from "../components/SudokuBoard";
 import Timer from "../components/Timer";
 import FinishModal from "../components/FinishModal";
 import generateBoard from "../utils/generateBoard";
+import { setHighScore } from "../utils/setHighScore";
 
 function findArrayDifferences(arr1, arr2) {
   const differences = [];
@@ -33,9 +34,10 @@ const Game = () => {
   const [isFinishModalVisible, setIsFinishModalVisible] = useState(false);
   const route = useRoute();
 
+  const difficulty = route.params?.difficulty || "moderate";
+
   const handleNewGame = () => {
     setWrongValueCells([]);
-    const difficulty = route.params?.difficulty || "moderate";
     const { puzzle: newPuzzle, solution } = generateBoard(difficulty);
     setTime(0);
     setIsTimerRunning(true);
@@ -58,6 +60,7 @@ const Game = () => {
       // Board is solved
       setIsTimerRunning(false);
       setIsFinishModalVisible(true);
+      setHighScore(difficulty, time);
     } else {
       if (board && levelSolution && isBoardFilled)
         setWrongValueCells(findArrayDifferences(board, levelSolution));

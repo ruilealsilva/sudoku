@@ -3,6 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Game from "./pages/Game";
 import Home from "./pages/Home";
+import Highscores from "./pages/Highscores";
 
 const Stack = createStackNavigator();
 
@@ -15,6 +16,11 @@ export default function App() {
           name="Game"
           component={Game}
           options={{ headerTitle: "Sudoku" }}
+        />
+        <Stack.Screen
+          name="Highscores"
+          component={Highscores}
+          options={{ headerTitle: "Highscores" }}
         />
       </Stack.Navigator>
     </NavigationContainer>

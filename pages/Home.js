@@ -16,6 +16,10 @@ const Home = () => {
     navigation.navigate("Game", { difficulty });
   };
 
+  const handleHighscoresPress = () => {
+    navigation.navigate("Highscores");
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Selecione uma dificuldade:</Text>
@@ -30,6 +34,12 @@ const Home = () => {
           </TouchableOpacity>
         ))}
       </View>
+      <TouchableOpacity
+        style={styles.highscoresButton}
+        onPress={handleHighscoresPress}
+      >
+        <Text style={styles.highscoresButtonText}>Highscores</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -65,6 +75,18 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "#fff",
     fontWeight: "bold",
+  },
+  highscoresButton: {
+    marginTop: 30,
+    backgroundColor: "#0D47A1",
+    borderRadius: 5,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+  },
+  highscoresButtonText: {
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 16,
   },
 });
 
