@@ -85,15 +85,25 @@ const SudokuBoard = ({
           </View>
         ))}
       <View style={styles.numberPad}>
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
+        <View style={styles.numberPadInner}>
+          {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
+            <TouchableOpacity
+              key={num}
+              style={styles.numberPadButton}
+              onPress={() => handleNumberPress(num)}
+            >
+              <Text style={styles.numberPadButtonText}>{num}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+        <View style={styles.numberPadInner}>
           <TouchableOpacity
-            key={num}
-            style={styles.numberPadButton}
-            onPress={() => handleNumberPress(num)}
+            style={styles.numberPadClear}
+            onPress={() => handleNumberPress(0)}
           >
-            <Text style={styles.numberPadButtonText}>{num}</Text>
+            <Text style={styles.numberPadClearText}>{"Apagar"}</Text>
           </TouchableOpacity>
-        ))}
+        </View>
       </View>
     </View>
   );
@@ -142,13 +152,17 @@ const styles = StyleSheet.create({
   bottomEdge: {
     borderBottomWidth: 2,
   },
-
   numberPad: {
-    flexDirection: "row",
+    flexDirection: "column",
     justifyContent: "center",
     paddingHorizontal: 10,
     backgroundColor: "#E3F2FD",
     paddingVertical: 20,
+  },
+  numberPadInner: {
+    flexDirection: "row",
+    marginVertical: 6,
+    justifyContent: "center",
   },
   numberPadButton: {
     width: cellSize * 0.9,
@@ -170,10 +184,40 @@ const styles = StyleSheet.create({
     borderRightWidth: 3,
     borderRightColor: "#0D47A1",
   },
+  numberPadClear: {
+    marginHorizontal: 2,
+    marginTop: 8,
+    paddingHorizontal: 4,
+    paddingBottom: 4,
+    paddingTop: 2,
+    backgroundColor: "#DC143C",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: "#9B1C1C",
+    shadowColor: "#9B1C1C",
+    shadowOffset: { width: 1, height: 1 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 2,
+    borderBottomWidth: 3,
+    borderBottomColor: "#9B1C1C",
+    borderRightWidth: 3,
+    borderRightColor: "#9B1C1C",
+    alignSelf: "flex-end",
+  },
+  numberPadClearText: {
+    fontSize: 16,
+    color: "#FFFFFF",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
   numberPadButtonText: {
     fontSize: 20,
     color: "#FFFFFF",
     fontWeight: "bold",
+    textAlign: "center",
   },
 });
 
