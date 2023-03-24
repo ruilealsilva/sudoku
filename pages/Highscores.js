@@ -10,15 +10,20 @@ const Highscores = () => {
 
   useEffect(() => {
     // Fetch the highscores from local storage
-    AsyncStorage.getItem("highscores").then((highscores) => {
-      console.log(highscores);
-      if (highscores) {
-        const parsedHighscores = JSON.parse(highscores);
-        setTestHighscore(parsedHighscores.test);
-        setEasyHighscore(parsedHighscores.easy);
-        setNormalHighscore(parsedHighscores.normal);
-        setHardHighscore(parsedHighscores.hard);
-      }
+    AsyncStorage.multiGet([
+      "highscore-test",
+      "highscore-easy",
+      "highscore-normal",
+      "highscore-hard",
+    ]).then((highscores) => {
+      const parsedHighscores = highscores.reduce((acc, [key, value]) => {
+        const difficulty = key.split("-")[1];
+        return { ...acc, [difficulty]: value || "-" };
+      }, {});
+      setTestHighscore(parsedHighscores.test);
+      setEasyHighscore(parsedHighscores.easy);
+      setNormalHighscore(parsedHighscores.normal);
+      setHardHighscore(parsedHighscores.hard);
     });
   }, []);
 

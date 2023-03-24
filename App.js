@@ -1,9 +1,7 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import Game from "./pages/Game";
-import Home from "./pages/Home";
-import Highscores from "./pages/Highscores";
+import { Highscores, Home, Game } from "./pages";
 
 const Stack = createStackNavigator();
 

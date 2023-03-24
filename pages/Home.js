@@ -38,7 +38,7 @@ const Home = () => {
         style={styles.highscoresButton}
         onPress={handleHighscoresPress}
       >
-        <Text style={styles.highscoresButtonText}>Highscores</Text>
+        <Text style={styles.highscoresButtonText}>Recordes</Text>
       </TouchableOpacity>
     </View>
   );
