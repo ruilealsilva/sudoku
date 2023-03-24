@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, TouchableWithoutFeedback, View } from "react-native";
 import { useRoute } from "@react-navigation/native";
-import Header from "../components/Header";
 import SudokuBoard from "../components/SudokuBoard";
 import Timer from "../components/Timer";
 import FinishModal from "../components/FinishModal";
@@ -22,9 +21,6 @@ function findArrayDifferences(arr1, arr2) {
 const emptyBoard = Array.from({ length: 9 }, () =>
   Array.from({ length: 9 }, () => 0)
 );
-
-//
-// Next steps: difficulty and maybe high score.
 
 const Game = () => {
   const [board, setBoard] = useState(emptyBoard);
@@ -65,8 +61,6 @@ const Game = () => {
     } else {
       if (board && levelSolution && isBoardFilled)
         setWrongValueCells(findArrayDifferences(board, levelSolution));
-      // Board is not solved
-      // Do something else, like show an error message or reset the board
     }
   }, [board]);
 
